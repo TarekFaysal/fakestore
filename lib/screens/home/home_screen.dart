@@ -1,5 +1,6 @@
 import 'package:fakestore/model/product.dart';
 import 'package:fakestore/model/products_categories.dart';
+import 'package:fakestore/screens/details/details_screen.dart';
 import 'package:fakestore/screens/home/components/product_card.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   .toList(),
             ),
           ),
-          //AllMovies.where((i) => i.isAnimated).toList()
           body: TabBarView(
             children: categories
                 .map((item) => GridView.builder(
@@ -41,7 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ?.where((element) => element.category == item)
                           .toList()
                           .length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 2.2 / 2,
                       ),
@@ -49,10 +50,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         List<Product> categoryProducts = products!
                             .where((element) => element.category == item)
                             .toList();
-                        return ProductCard(
-                          title: categoryProducts[index].title,
-                          price: categoryProducts[index].price,
-                          image: categoryProducts[index].image,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                DetailsScreen.routeName,
+                                arguments: categoryProducts[index]);
+                          },
+                          child: ProductCard(
+                            title: categoryProducts[index].title,
+                            price: categoryProducts[index].price,
+                            image: categoryProducts[index].image,
+                          ),
                         );
                       },
                     ))
